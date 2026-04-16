@@ -1,0 +1,9 @@
+.*/
+.env
+[Bb]in/
+[Oo]bj/
+compile_commands.json
+submission.zip
+mmu_app
+mmu_test
+workloads/
