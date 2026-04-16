@@ -11,4 +11,4 @@ Basic simulation of the Memory Mangement Unit.
 ## Details
 - "Physical memory" is abstracted as a large continguous mmap'd region
 - Processes are abstracted as threads
-- Programs inherit from a superclass which provides access to `mmap` and `munmap`
+- "Programs" inherit from a superclass which provides access to `mmap` and `munmap`
