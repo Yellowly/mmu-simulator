@@ -3,11 +3,14 @@
 
 #include "process_manager.h"
 #include <unistd.h>
-class MapperProgram : public Program {
 
+class BasicTestProgram : public Program {
 public:
-  // using Program::Program;
-  //  MapperProgram(Process *p);
+  int main(int argc, char *argv[]);
+};
+
+class MapperProgram : public Program {
+public:
   int main(int argc, char *argv[]);
 };
 

@@ -9,7 +9,7 @@ void *Process::start_prog(void *args) {
   try {
     *p_args.result_loc = p_args.prog->main(p_args.argc, p_args.argv);
   } catch (const std::exception &e) {
-    std::cout << e.what() << std::endl;
+    std::cout << "Error in " << p_args.argv[0] << ": " << e.what() << std::endl;
     *p_args.result_loc = 139; // Error code for segfault
   }
   return (void *)p_args.result_loc;

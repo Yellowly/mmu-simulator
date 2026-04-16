@@ -9,30 +9,30 @@
 int main(int argc, char *argv[]) {
   MMU mmu = MMU(65536, 256);
   // MapperProgram a = MapperProgram(mmu);
-  Process a = Process(progT<MapperProgram>{}, &mmu);
-  Process b = Process(progT<MapperProgram>{}, &mmu);
+  Process a = Process(progT<BasicTestProgram>{}, &mmu);
+  Process b = Process(progT<BasicTestProgram>{}, &mmu);
 
   char *pipe1 = "pipe1";
   char *pipe2 = "pipe2";
-  mkfifo(pipe1, 0666);
-  mkfifo(pipe2, 0666);
+  // mkfifo(pipe1, 0666);
+  // mkfifo(pipe2, 0666);
 
-  char *arg1s[] = {pipe1, pipe1};
-  char *arg2s[] = {pipe2, pipe2};
+  char *arg1s[] = {"program 1", pipe1};
+  char *arg2s[] = {"program 2", pipe2};
   a.run(2, arg1s);
   b.run(2, arg2s);
 
-  int fd1 = open(pipe1, O_WRONLY);
-  int fd2 = open(pipe2, O_WRONLY);
+  // int fd1 = open(pipe1, O_WRONLY);
+  // int fd2 = open(pipe2, O_WRONLY);
 
-  write(fd1, "Hello,", 7);
-  write(fd2, "World!", 7);
-  close(fd1);
-  close(fd2);
+  // write(fd1, "Hello,", 7);
+  // write(fd2, "World!", 7);
+  // close(fd1);
+  // close(fd2);
 
   // std::cout << "waiting...\n";
   a.wait(NULL);
   b.wait(NULL);
-  unlink(pipe1);
-  unlink(pipe2);
+  // unlink(pipe1);
+  // unlink(pipe2);
 }

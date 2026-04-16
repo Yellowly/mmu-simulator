@@ -68,7 +68,8 @@ public:
     return lhs;
   }
   T &operator[](unsigned int index) {
-    return p->mmu->page_walk(p->pgd_addr, virtual_address + index);
+    return *(T *)p->mmu->page_walk(p->pgd_addr,
+                                   virtual_address + index * sizeof(T));
   }
   T &operator*() {
     return *(T *)p->mmu->page_walk(p->pgd_addr, virtual_address);
