@@ -1,5 +1,5 @@
-_DEPS = my_mmu.h process_manager.h programs.h
-_OBJ = my_mmu.o process_manager.o programs.o
+_DEPS = my_mmu.h my_process.h programs.h
+_OBJ = my_mmu.o my_process.o programs.o
 _MOBJ = main.o
 _TOBJ = test.o
 

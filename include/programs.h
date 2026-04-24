@@ -1,7 +1,7 @@
 #ifndef __MY_PROGRAMS_H
 #define __MY_PROGRAMS_H
 
-#include "process_manager.h"
+#include "my_process.h"
 #include <unistd.h>
 
 class BasicTestProgram : public Program {

@@ -1,27 +1,48 @@
-#include <gtest/gtest.h>
-#include <scheduling.h>
+#include "my_mmu.h"
+#include "my_process.h"
 #include <fstream>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-TEST(SchedulingTest, ReadWorkload1) {
-    pqueue_arrival pq = read_workload("workloads/workload_01.txt");
-    EXPECT_EQ(pq.size(), 3) << "workload_01 should load 3 processes";
+class TestProgram1 : public Program {
+public:
+  int temp = 0;
+  int main(int argc, char *argv[]) {
+    // mmap some pages
+    vaddr<int> addrs = my_mmap(0, 1024);
+
+    *addrs = 12345;
+
+    // Should get 12345
+    temp = *addrs;
+
+    return 0;
+  }
+};
+
+TEST(MMU, InitMMU) {
+  MMU mmu = MMU(65536, 256);
+  EXPECT_EQ(mmu.get_page_size(), 256);
+  EXPECT_EQ(mmu.get_free_pages_size(), 256);
 }
 
-TEST(SchedulingTest, FIFO1) {
-    pqueue_arrival pq = read_workload("workloads/workload_01.txt");
-    list<Process> xs = fifo(pq);
-    float t = avg_turnaround(xs);
-    float r = avg_response(xs);
-    EXPECT_FLOAT_EQ(t, 20) << "FIFO workload_01 turnaround expected 20";
-    EXPECT_FLOAT_EQ(r, 10) << "FIFO workload_01 response expected 10";
+TEST(ProcessTest, Cleanup) {
+  MMU mmu = MMU(65536, 256);
+  {
+    Process a = Process(progT<TestProgram1>{}, &mmu);
+    char *args[] = {(char *)"program 1"};
+    a.run(2, args);
+    a.wait(NULL);
+    // EXPECT_EQ(mmu.get_free_pages_size(), 249);
+  }
+  // Destructor for process gets called here
+  EXPECT_EQ(mmu.get_free_pages_size(), 256);
 }
-
 
 int main(int argc, char **argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
